@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp
+spec:
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: front-end
+    spec:
+      containers:
+        - image: nginx
+          name: nginx-container
+  replicas: 3
+  # this selector key is the only difference between replication controller and replica set
+  # allows the replica set to manage things not only defined in the pd template here
+  # NOTE: this template in spec is used to create / scale pods if needed - so needs to be there even though the
+  # pods maybe be already created
+  selector:
+    matchLabels:
+      type: front-end
